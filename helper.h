@@ -44,3 +44,5 @@ void DrawUI(std::vector<POINT_OF_INTREST> &, int, int);
 void WriteBorders(INT_MATRIX_2D &);
 
 bool IsPointOfInterest(int xPosition, int yPosition, std::vector<POINT_OF_INTREST> pois);
+void GetUserInput(std::vector<POI_RECTANGLE_UI> &pois);
+void GetStringFromUser(std::string &str);

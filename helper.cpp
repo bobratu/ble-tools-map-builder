@@ -100,7 +100,7 @@ void POI_RECTANGLE_UI::Draw() {
     DrawRectangleRec(positionRectangle,GREEN);
     DrawRectangleRec(nameRectangle,GREEN);
     DrawRectangleRec(idRectangle,GREEN);
-    DrawRectangleRec(arduinoToggleRectangle,GREEN);
+    
 
     char xPositionStr[16];
     char yPositionStr[16];
@@ -118,6 +118,14 @@ void POI_RECTANGLE_UI::Draw() {
     DrawText(poi->name.c_str(),nameRectangle.x+3,nameRectangle.y+2,13,WHITE);
     DrawText(idStr,idRectangle.x+3,idRectangle.y+2,13,WHITE);
 
+    if (poi->arduino) {
+        DrawRectangleRec(arduinoToggleRectangle,RED);
+        DrawText("ARD",arduinoToggleRectangle.x, arduinoToggleRectangle.y +2, 13 ,WHITE);
+    } else {
+        DrawRectangleRec(arduinoToggleRectangle,GREEN);
+        DrawText("POI",arduinoToggleRectangle.x, arduinoToggleRectangle.y +2, 13 ,WHITE);
+    }
+    
 }
 
 
@@ -140,9 +148,45 @@ void DrawUI(std::vector<POINT_OF_INTREST> &pois, int xResolution, int yResolutio
         POI_RECTANGLE_UI poiRectangle(positionRectangle,idRectangle,nameRectangle,toggleArduinoRectangle,poi);
         poiRectangle.Draw();
         uiRectangles.push_back(poiRectangle);
-    
+    }
+    GetUserInput(uiRectangles);
+}
+
+void GetUserInput(std::vector<POI_RECTANGLE_UI> &pois) {
+    for (int i = 0; i < pois.size();i++) {
+        POI_RECTANGLE_UI poi = pois[i];
+        
+        Rectangle arduinoToggleRec = poi.toggleArduinoRectangle;
+        Rectangle nameRectangle = poi.nameRectangle;
+        if (CheckCollisionPointRec(GetMousePosition(),arduinoToggleRec) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            poi.poi->arduino = !poi.poi->arduino;
+        }
+        if (CheckCollisionPointRec(GetMousePosition(),nameRectangle)) {
+            GetStringFromUser(poi.poi->name);            
+
+        }
+
+        
+
     }
 }
+
+void GetStringFromUser(std::string &str) {
+    
+    int key = GetCharPressed();
+
+    while (key > 0 && str.length() < 10) {
+        if (key >= 32 && key <= 125) {
+            str.push_back(char(key));
+        }
+        key = GetCharPressed();
+    }
+
+    if (IsKeyPressed(KEY_BACKSPACE) && str.length() > 0) {
+        str.pop_back();
+    }
+}
+
 void DrawMatrix(INT_MATRIX_2D &matrix, int downscale_amt, std::vector<POINT_OF_INTREST> pois) {
         for (int x = 0; x < matrix.rows; x++) {
 
