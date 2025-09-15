@@ -25,10 +25,20 @@ class POINT_OF_INTREST {
 
 };
 
+class POI_RECTANGLE_UI {
+	public:
+		Rectangle positionRectangle;
+		Rectangle nameRectangle;
+		Rectangle idRectangle;
+		POINT_OF_INTREST *poi;
+		POI_RECTANGLE_UI(Rectangle, Rectangle, Rectangle, POINT_OF_INTREST *poi );
+		void Draw();
+};
+
 
 void DrawMatrix(INT_MATRIX_2D &, int, std::vector<POINT_OF_INTREST> );
 void WriteToMatrix(INT_MATRIX_2D &, int, int, int, std::vector<POINT_OF_INTREST> &);
-void DrawUI(INT_MATRIX_2D &, int, int);
+void DrawUI(std::vector<POINT_OF_INTREST> &, int, int);
 void WriteBorders(INT_MATRIX_2D &);
 
 bool IsPointOfInterest(int xPosition, int yPosition, std::vector<POINT_OF_INTREST> pois);

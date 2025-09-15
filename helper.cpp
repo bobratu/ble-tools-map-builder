@@ -41,13 +41,6 @@ INT_MATRIX_2D::~INT_MATRIX_2D() {
 
 
 
-POINT_OF_INTREST::POINT_OF_INTREST(int xPosition, int yPosition, int id, std::string name) {
-	this->xPosition = xPosition;
-	this->yPosition = yPosition;
-	this->id = id;
-	this->name = name;
-}
-
 
 void WriteToMatrix(INT_MATRIX_2D &matrix, int downscale_amt, int xResolution, int yResolution, std::vector<POINT_OF_INTREST> &pois) {
     Vector2 mousePosition = GetMousePosition();
@@ -82,10 +75,67 @@ bool IsPointOfInterest(int xPosition, int yPosition, std::vector<POINT_OF_INTRES
     return false;
 }
 
+POINT_OF_INTREST::POINT_OF_INTREST(int xPosition, int yPosition, int id, std::string name) {
+	this->xPosition = xPosition;
+	this->yPosition = yPosition;
+	this->id = id;
+	this->name = name;
+}
 
-void DrawUI(INT_MATRIX_2D &matrix, int xResolution, int yResolution) {
+POI_RECTANGLE_UI::POI_RECTANGLE_UI(Rectangle positionRectangle, Rectangle idRectangle, Rectangle nameRectangle, POINT_OF_INTREST *poi) {
+    this->positionRectangle = positionRectangle;
+    this->nameRectangle = nameRectangle;
+    this->idRectangle = idRectangle;
+    this->poi = poi;
+}
+void POI_RECTANGLE_UI::Draw() {
+    Rectangle idRectangle = this->idRectangle;
+    Rectangle nameRectangle = this->nameRectangle;
+    Rectangle positionRectangle = this->positionRectangle;
+
+    DrawRectangleRec(positionRectangle,GREEN);
+    DrawRectangleRec(nameRectangle,GREEN);
+    DrawRectangleRec(idRectangle,GREEN);
+
+    char xPositionStr[16];
+    char yPositionStr[16];
+    char idStr[16];
+    itoa(poi->xPosition,xPositionStr,10);
+    itoa(poi->yPosition,yPositionStr,10); //im sure this wont cause any problems in the future..
+    itoa(poi->id,idStr,10);
+
+    std::string combined = "";
+    combined.append(xPositionStr);
+    combined += "/";
+    combined.append(yPositionStr);
+
+    DrawText(combined.c_str(),positionRectangle.x+3,positionRectangle.y+2,13,WHITE);
+    DrawText(poi->name.c_str(),nameRectangle.x+3,nameRectangle.y+2,13,WHITE);
+    DrawText(idStr,idRectangle.x+3,idRectangle.y+2,13,WHITE);
+
+}
+
+
+
+void DrawUI(std::vector<POINT_OF_INTREST> &pois, int xResolution, int yResolution) {
+    int startingX = xResolution+5;
+    int startingY = 5;
+
+    std::vector<POI_RECTANGLE_UI> uiRectangles{};
+    uiRectangles.reserve(pois.size());
     
+    for (int i = 0; i < pois.size(); i++) {
+        int yPosition = startingY+(20*i);
+        Rectangle positionRectangle = {startingX,yPosition,45,15};
+        Rectangle idRectangle = {startingX + 50, yPosition,25,15};
+        Rectangle nameRectangle = {startingX + 50 + 25 + 5 , yPosition, 100, 15};
+        POINT_OF_INTREST *poi = &pois[i];
 
+        POI_RECTANGLE_UI poiRectangle(positionRectangle,idRectangle,nameRectangle,poi);
+        poiRectangle.Draw();
+        uiRectangles.push_back(poiRectangle);
+    
+    }
 }
 void DrawMatrix(INT_MATRIX_2D &matrix, int downscale_amt, std::vector<POINT_OF_INTREST> pois) {
         for (int x = 0; x < matrix.rows; x++) {
@@ -101,12 +151,10 @@ void DrawMatrix(INT_MATRIX_2D &matrix, int downscale_amt, std::vector<POINT_OF_I
                 if (value == 1) {
                     DrawRectangle(xPosition,yPosition,downscale_amt,downscale_amt,WHITE); // WALLS
                 } else if (value == 0) {
-                    DrawRectangle(xPosition,yPosition,downscale_amt,downscale_amt,BLACK); // ARDUINO POSITIONS
-                } else if (value == 2) {
-                    DrawRectangle(xPosition,yPosition,downscale_amt,downscale_amt,ORANGE); // ARDUINO POSITIONS
+                    DrawRectangle(xPosition,yPosition,downscale_amt,downscale_amt,BLACK); // EMPTY
                 }
 
-                
+
                 if (isPoi) {
                     DrawRectangle(xPosition, yPosition, downscale_amt, downscale_amt, GREEN);
 
