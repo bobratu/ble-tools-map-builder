@@ -15,7 +15,7 @@ int main()
 
 void CreateWindow(int xResolution, int yResolution, int downscale_amt) {
     InitWindow(xResolution+300,yResolution, "Map builder");
-    SetTargetFPS(60);   
+    SetTargetFPS(200);   
    
     INT_MATRIX_2D matrix(xResolution/downscale_amt,yResolution/downscale_amt); // you should prolly make sure this divides into an even number 
     std::vector<POINT_OF_INTREST> pois{};
