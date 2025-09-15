@@ -18,9 +18,10 @@ class POINT_OF_INTREST {
 	public:
 		int xPosition;
 		int yPosition;
-		int id; // 1 == arduino 2 == waypoint
+		int uuid; // 1 == arduino 2 == waypoint
+		bool arduino = false;
 		std::string name;
-		POINT_OF_INTREST(int,int,int,std::string);
+		POINT_OF_INTREST(int,int,int,bool,std::string);
 
 
 };
@@ -29,9 +30,10 @@ class POI_RECTANGLE_UI {
 	public:
 		Rectangle positionRectangle;
 		Rectangle nameRectangle;
+		Rectangle toggleArduinoRectangle;
 		Rectangle idRectangle;
 		POINT_OF_INTREST *poi;
-		POI_RECTANGLE_UI(Rectangle, Rectangle, Rectangle, POINT_OF_INTREST *poi );
+		POI_RECTANGLE_UI(Rectangle,Rectangle, Rectangle, Rectangle, POINT_OF_INTREST *poi );
 		void Draw();
 };
 

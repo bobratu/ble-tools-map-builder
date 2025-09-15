@@ -4,6 +4,7 @@
 #include <vector>
 #include "raylib.h"
 
+
 INT_MATRIX_2D::INT_MATRIX_2D(int rows, int columns) {
 	this->rows = rows;
 	this->columns = columns;
@@ -18,6 +19,7 @@ INT_MATRIX_2D::INT_MATRIX_2D(int rows, int columns) {
 
 		}
 	}
+    
 
 	this->array = array;
 }
@@ -55,7 +57,7 @@ void WriteToMatrix(INT_MATRIX_2D &matrix, int downscale_amt, int xResolution, in
             matrix[xMousePosition][yMousePosition] = 0;
 
         } else if (IsKeyPressed(KEY_H)) {
-            pois.push_back(POINT_OF_INTREST(xMousePosition,yMousePosition,-1,"UNLABELED"));
+            pois.push_back(POINT_OF_INTREST(xMousePosition,yMousePosition,-1,false,"UNLABELED"));
             matrix[xMousePosition][yMousePosition] = 2;
         }
 
@@ -75,34 +77,37 @@ bool IsPointOfInterest(int xPosition, int yPosition, std::vector<POINT_OF_INTRES
     return false;
 }
 
-POINT_OF_INTREST::POINT_OF_INTREST(int xPosition, int yPosition, int id, std::string name) {
+POINT_OF_INTREST::POINT_OF_INTREST(int xPosition, int yPosition, int uuid,bool arduino, std::string name) {
 	this->xPosition = xPosition;
 	this->yPosition = yPosition;
-	this->id = id;
+	this->uuid = uuid;
+    this->arduino = arduino;
 	this->name = name;
 }
 
-POI_RECTANGLE_UI::POI_RECTANGLE_UI(Rectangle positionRectangle, Rectangle idRectangle, Rectangle nameRectangle, POINT_OF_INTREST *poi) {
+POI_RECTANGLE_UI::POI_RECTANGLE_UI(Rectangle positionRectangle, Rectangle idRectangle, Rectangle nameRectangle,Rectangle toggleArduinoRectangle, POINT_OF_INTREST *poi) {
     this->positionRectangle = positionRectangle;
     this->nameRectangle = nameRectangle;
     this->idRectangle = idRectangle;
+    this->toggleArduinoRectangle = toggleArduinoRectangle;
     this->poi = poi;
 }
 void POI_RECTANGLE_UI::Draw() {
     Rectangle idRectangle = this->idRectangle;
     Rectangle nameRectangle = this->nameRectangle;
     Rectangle positionRectangle = this->positionRectangle;
-
+    Rectangle arduinoToggleRectangle = this->toggleArduinoRectangle;
     DrawRectangleRec(positionRectangle,GREEN);
     DrawRectangleRec(nameRectangle,GREEN);
     DrawRectangleRec(idRectangle,GREEN);
+    DrawRectangleRec(arduinoToggleRectangle,GREEN);
 
     char xPositionStr[16];
     char yPositionStr[16];
     char idStr[16];
     itoa(poi->xPosition,xPositionStr,10);
     itoa(poi->yPosition,yPositionStr,10); //im sure this wont cause any problems in the future..
-    itoa(poi->id,idStr,10);
+    itoa(poi->uuid,idStr,10);
 
     std::string combined = "";
     combined.append(xPositionStr);
@@ -128,10 +133,11 @@ void DrawUI(std::vector<POINT_OF_INTREST> &pois, int xResolution, int yResolutio
         int yPosition = startingY+(20*i);
         Rectangle positionRectangle = {startingX,yPosition,45,15};
         Rectangle idRectangle = {startingX + 50, yPosition,25,15};
-        Rectangle nameRectangle = {startingX + 50 + 25 + 5 , yPosition, 100, 15};
+        Rectangle toggleArduinoRectangle = {startingX + 50 + 25 + 5,yPosition, 25, 15};
+        Rectangle nameRectangle = {startingX + 50 + 25 + 25+ 5 +5 , yPosition, 100, 15};
         POINT_OF_INTREST *poi = &pois[i];
 
-        POI_RECTANGLE_UI poiRectangle(positionRectangle,idRectangle,nameRectangle,poi);
+        POI_RECTANGLE_UI poiRectangle(positionRectangle,idRectangle,nameRectangle,toggleArduinoRectangle,poi);
         poiRectangle.Draw();
         uiRectangles.push_back(poiRectangle);
     
