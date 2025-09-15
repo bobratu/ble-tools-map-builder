@@ -26,17 +26,11 @@ void CreateWindow(int xResolution, int yResolution, int downscale_amt) {
 
     while (!WindowShouldClose())    
     {
-
         BeginDrawing();
-
-
-
-
         WriteToMatrix(matrix, downscale_amt, xResolution, yResolution, pois);
         DrawMatrix(matrix,downscale_amt, pois);
         DrawUI(pois,xResolution,yResolution);
         EndDrawing();
-
     }
 
     CloseWindow();        
