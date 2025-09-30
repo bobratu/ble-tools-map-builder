@@ -2,7 +2,9 @@
 #include "rlgl.h"
 #include <cstdlib>
 #include <iostream>
-#include "helper.h"
+#include "matrix.h"
+#include "ui.h"
+#include "point_of_interest.h"
 #include <vector>
 
 void CreateWindow(int,int,int);
@@ -21,8 +23,6 @@ void CreateWindow(int xResolution, int yResolution, int downscale_amt) {
     std::vector<POINT_OF_INTREST> pois{};
 
     WriteBorders(matrix);
-
-
 
     while (!WindowShouldClose())    
     {
