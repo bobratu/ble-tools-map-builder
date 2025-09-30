@@ -6,6 +6,7 @@
 #include "ui.h"
 #include "point_of_interest.h"
 #include <vector>
+#include "helper.h"
 
 void CreateWindow(int,int,int);
 int main()
