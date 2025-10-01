@@ -1,9 +1,9 @@
 #pragma once
 #include "point_of_interest.h"
+#include "raylib.h"
 class POI_RECTANGLE_UI {
 	public:
 		Rectangle positionRectangle;
-		
 		Rectangle toggleArduinoRectangle;
 		Rectangle idRectangle;
 		Rectangle deleteRectangle;
