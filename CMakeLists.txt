@@ -23,7 +23,7 @@ endif()
 
 # Our Project
 
-add_executable(${PROJECT_NAME} src/core_basic_window.cpp src/matrix.cpp src/ui.cpp src/point_of_Interest.cpp src/helper.cpp )
+add_executable(${PROJECT_NAME} src/core_basic_window.cpp src/matrix.cpp src/ui.cpp src/point_of_Interest.cpp src/helper.cpp src/serialize.cpp )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 

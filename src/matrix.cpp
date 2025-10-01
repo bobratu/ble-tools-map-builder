@@ -6,10 +6,11 @@ INT_MATRIX_2D::INT_MATRIX_2D(int rows, int columns) {
 	this->rows = rows;
 	this->columns = columns;
 
-	int **array = (int **)(malloc(sizeof(int *) * rows));
+	std::vector<std::vector<int>> array = {};
 
 	for (int i = 0; i < rows; i++) {
-		array[i] = (int *)malloc(sizeof(int) * columns);
+		std::vector<int> new_vec = {};
+		array.push_back(new_vec);
 
 		for (int x = 0; x < columns; x++ ) {
 			array[i][x] = 0;
@@ -21,19 +22,17 @@ INT_MATRIX_2D::INT_MATRIX_2D(int rows, int columns) {
 	this->array = array;
 }
 
-int* INT_MATRIX_2D::operator[](int i) {
+INT_MATRIX_2D::INT_MATRIX_2D() : INT_MATRIX_2D(1,1) {
+	
+}
+
+std::vector<int> INT_MATRIX_2D::operator[](int i) {
 	if (i > this->rows) {
 		std::cout << i <<" is out of bountsds";
 		exit(-1);
 	}
-	int *bruh = this->array[i];
+	
 
-	return bruh;
+	return this->array[i];
 }
 
-INT_MATRIX_2D::~INT_MATRIX_2D() {
-	for (int i = 0; i < this->rows; i++) {
-		free(this->array[i]);
-	}
-	free(this->array);
-}
