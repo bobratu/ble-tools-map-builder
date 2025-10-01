@@ -13,7 +13,6 @@ void CreateWindow(int,int,int);
 int main()
 { 
     CreateWindow(500, 500, 10);    
-
     
     return 0;
 }

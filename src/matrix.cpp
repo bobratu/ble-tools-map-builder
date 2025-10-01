@@ -13,8 +13,7 @@ INT_MATRIX_2D::INT_MATRIX_2D(int rows, int columns) {
 		array.push_back(new_vec);
 
 		for (int x = 0; x < columns; x++ ) {
-			array[i][x] = 0;
-
+			array[i].push_back(0);
 		}
 	}
     
